@@ -1,3 +1,4 @@
+// src/context/AuthContext.js
 import React, { createContext, useState, useContext, useEffect, useCallback } from 'react';
 import { loginUser } from '../services/authService'; // Asumimos que tienes un servicio para la API
 
@@ -33,6 +34,14 @@ export const AuthProvider = ({ children }) => {
         }
     }, []);
 
+    // --- FUNCIÓN LOGOUT ---
+    // Definimos logout primero para que esté disponible para el login useCallback
+    const logout = useCallback(() => {
+        localStorage.removeItem('usuario');
+        localStorage.removeItem('token');
+        setUsuario(null);
+    }, []); // El array de dependencias está vacío porque no depende de ningún estado/prop externo
+
     // --- FUNCIÓN LOGIN MEJORADA ---
     // Ahora esta función llama a la API y actualiza el estado.
     const login = useCallback(async (email, contrasena) => {
@@ -48,18 +57,11 @@ export const AuthProvider = ({ children }) => {
             return usuario;
         } catch (error) {
             // Si el login falla, nos aseguramos de que no quede basura en el estado
-            logout();
+            logout(); // <-- Aquí se usa 'logout'
             // Propagamos el error para que el componente Login pueda mostrar un toast
             throw error;
         }
-    }, []);
-
-    // --- FUNCIÓN LOGOUT ---
-    const logout = useCallback(() => {
-        localStorage.removeItem('usuario');
-        localStorage.removeItem('token');
-        setUsuario(null);
-    }, []);
+    }, [logout]); // <<--- ¡Aquí está la CORRECCIÓN! Añadimos 'logout' como dependencia.
 
     // Pasamos el nuevo estado 'cargando' en el valor del contexto
     const value = { usuario, cargando, login, logout };

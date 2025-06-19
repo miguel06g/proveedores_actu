@@ -1,102 +1,263 @@
+/* frontend/src/styles/providers.css */
+
+/* Estilos generales para los botones de icono circulares (con !important para forzar la aplicación) */
+.circular-icon-button {
+    width: 35px !important; /* Reducido el tamaño del círculo (antes 40px) */
+    height: 35px !important; /* Reducido el tamaño del círculo (antes 40px) */
+    border-radius: 50% !important; /* Fuerza que sea circular */
+    display: flex !important; /* Asegura flexbox */
+    justify-content: center !important;
+    align-items: center !important;
+    cursor: pointer;
+    color: white !important; /* Fuerza el color del icono */
+    font-size: 16px !important; /* Reducido el tamaño del icono (antes 18px) */
+    border: none !important; /* Elimina cualquier borde de Bootstrap */
+    padding: 0 !important; /* Elimina cualquier padding de Bootstrap */
+    margin: 0 !important; /* Elimina cualquier margin de Bootstrap si lo hubiera */
+    transition: background-color 0.3s ease, transform 0.2s ease, box-shadow 0.2s ease; /* Suavizar las transiciones */
+    flex-shrink: 0; /* Evita que los botones se encojan en un contenedor flex */
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2); /* Sombra sutil para darle profundidad */
+}
+
+.circular-icon-button:hover {
+    opacity: 0.9; /* Un poco de opacidad para el efecto hover */
+    transform: translateY(-1px); /* Ligero levantamiento al pasar el ratón */
+}
+
+.circular-icon-button:active {
+    transform: translateY(0); /* Efecto de "presionado" */
+    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.2);
+}
+
+/* Colores específicos para los botones que coinciden con el estilo deseado (con !important) */
+.circular-icon-button.blue {
+    background-color: #007bff !important; /* Bootstrap primary */
+}
+.circular-icon-button.green {
+    background-color: #28a745 !important; /* Bootstrap success */
+}
+.circular-icon-button.cyan {
+    background-color: #17a2b8 !important; /* Bootstrap info */
+}
+.circular-icon-button.yellow {
+    background-color: #ffc107 !important; /* Bootstrap warning (para Editar)*/
+}
+.circular-icon-button.red {
+    background-color: #dc3545 !important; /* Bootstrap danger (para Inactivar)*/
+}
+
+
+/* --- AJUSTES PARA LA CABECERA Y LOS BOTONES SUPERIORES (Se mantienen como los últimos que te di) --- */
+
+.page-header {
+    margin-bottom: 25px;
+    border-bottom: 1px solid #e9ecef;
+    padding-bottom: 15px;
+    display: flex; /* Contenedor flexible para el encabezado */
+    flex-direction: column; /* Apila el título y los botones */
+    align-items: center; /* Centra el contenido horizontalmente */
+    width: 100%; /* Asegura que ocupe todo el ancho disponible */
+}
+
+.page-header h2 {
+    color: #343a40;
+    margin-bottom: 15px;
+    text-align: center;
+    width: 100%;
+}
+
+/* Contenedor de los 4 botones principales en la cabecera*/
+.page-header .d-flex { 
+    width: 100%; 
+    display: flex;
+    flex-wrap: wrap; 
+    justify-content: center; 
+    gap: 8px; 
+    margin-top: 15px; 
+    padding: 0 10px; 
+}
+
+/* Estilos individuales para los botones de la cabecera (Se mantienen como los últimos que te di) */
+.page-header .d-flex .btn {
+    flex-grow: 1; 
+    max-width: 160px; 
+    min-width: 130px; 
+    padding: 8px 12px; 
+    font-size: 0.85rem; 
+    text-align: center;
+    white-space: nowrap; 
+    border-radius: 6px; 
+    border: none; 
+    cursor: pointer; 
+    transition: background-color 0.3s ease, transform 0.2s ease;
+}
+
+/* Colores específicos para los botones de la cabecera (usando las clases de Bootstrap) */
+.btn-primary { background-color: #007bff; color: white; }
+.btn-primary:hover { background-color: #0056b3; }
+
+.btn-success { background-color: #28a745; color: white; }
+.btn-success:hover { background-color: #1e7e34; }
+
+.btn-info { background-color: #17a2b8; color: white; }
+.btn-info:hover { background-color: #138496; }
+
+.btn-secondary { background-color: #6c757d; color: white; }
+.btn-secondary:hover { background-color: #5a6268; }
+
+
+/* --- CÓDIGO CSS QUE YA TENÍAS Y SE MANTIENE --- */
+
 /* Nueva clase para centrar el contenedor */
 .providers-center-container {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  min-height: 80vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 80vh;
+    padding: 16px; 
 }
 
-/* Card ajustada */
+/* Card ajustada y más ancha */
 .providers-card {
-  background: #fff;
-  border-radius: 10px;
-  box-shadow: 0 2px 12px rgba(0, 0, 0, 0.08);
-  padding: 32px 40px;
-  width: 100%;
-  max-width: 500px;
+    background: #fff;
+    border-radius: 10px;
+    box-shadow: 0 2px 12px rgba(0, 0, 0, 0.08);
+    padding: 32px 40px;
+    width: 100%;
+    max-width: 700px; 
 }
 
-/* Botones verticales y centrados */
+/* Botones verticales y centrados (si se usan fuera de la cabecera) */
 .providers-button-group {
-  display: flex;
-  flex-direction: column;
-  gap: 12px;
-  align-items: center;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    align-items: center;
 }
 
 .providers-button {
-  width: 180px;
-  padding: 10px 0;
-  font-size: 0.95rem;
-  font-weight: 600;
-  text-align: center;
-  border-radius: 6px;
-  text-decoration: none;
-  transition: background 0.3s ease;
+    width: 180px;
+    padding: 10px 0;
+    font-size: 0.95rem;
+    font-weight: 600;
+    text-align: center;
+    border-radius: 6px;
+    text-decoration: none;
+    transition: background 0.3s ease;
+    border: none; 
+    cursor: pointer; 
 }
 
-/* Colores específicos */
+/* Colores específicos para providers-button */
 .providers-button.blue {
-  background-color: #1d6ce2;
-  color: white;
+    background-color: #1d6ce2;
+    color: white;
 }
 .providers-button.blue:hover {
-  background-color: #1558b0;
+    background-color: #1558b0;
 }
 
 .providers-button.green {
-  background-color: #229954;
-  color: white;
+    background-color: #229954;
+    color: white;
 }
 .providers-button.green:hover {
-  background-color: #1a7e44;
+    background-color: #1a7e44;
 }
 
 .providers-button.cyan {
-  background-color: #00bcd4;
-  color: white;
+    background-color: #00bcd4;
+    color: white;
 }
 .providers-button.cyan:hover {
-  background-color: #0097a7;
-}
-/* Centrado de contenedor */
-.providers-center-container {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  min-height: 80vh;
-  padding: 16px;
-}
-
-/* Card más ancha */
-.providers-card {
-  background: #fff;
-  border-radius: 10px;
-  box-shadow: 0 2px 12px rgba(0, 0, 0, 0.08);
-  padding: 32px 40px;
-  width: 100%;
-  max-width: 700px; /* Aumentado para mayor ancho */
+    background-color: #0097a7;
 }
 
 /* Título centrado */
 .providers-title {
-  font-size: 2rem;
-  font-weight: bold;
-  margin-bottom: 24px;
-  color: #2c3e50;
-  text-align: center;
-}
-.reg {
-  dwidth: 180px;
-  padding: 10px 0;
-  font-size: 0.95rem;
-  font-weight: 600;
-  text-align: center;
-  border-radius: 6px;
-  text-decoration: none;
-  transition: background 0.3s ease
+    font-size: 2rem;
+    font-weight: bold;
+    margin-bottom: 24px;
+    color: #2c3e50;
+    text-align: center;
 }
 
-.btn-regresar:hover {
-  background-color: #363838;
+/* Clase .reg (corregida la propiedad 'width') */
+.reg {
+    width: 180px;
+    padding: 10px 0;
+    font-size: 0.95rem;
+    font-weight: 600;
+    text-align: center;
+    border-radius: 6px;
+    text-decoration: none;
+    transition: background 0.3s ease;
+    border: 1px solid #ccc;
+    background-color: #f0f0f0;
+    color: #333;
+}
+
+/* Estilos de tabla responsive */
+.table-responsive {
+    overflow-x: auto;
+}
+
+.table {
+    width: 100%;
+    margin-bottom: 1rem;
+    color: #212529;
+    border-collapse: collapse;
+}
+
+.table th, .table td {
+    padding: 0.75rem;
+    vertical-align: middle; 
+    border-top: 1px solid #dee2e6;
+    text-align: center; 
+}
+
+.table thead th {
+    vertical-align: bottom;
+    border-bottom: 2px solid #dee2e6;
+}
+
+.table-striped tbody tr:nth-of-type(odd) {
+    background-color: rgba(0, 0, 0, 0.05);
+}
+
+.table-hover tbody tr:hover {
+    color: #212529;
+    background-color: rgba(0, 0, 0, 0.1); 
+}
+
+/* Estilos para el contenedor de la página */
+.page-container {
+    padding: 20px;
+    background-color: #f8f9fa; 
+    border-radius: 8px;
+    box-shadow: 0 0 15px rgba(0, 0, 0, 0.1);
+}
+
+/* Estilos para el modal */
+.modal {
+    z-index: 1050; 
+}
+.modal-backdrop {
+    z-index: 1040; 
+}
+
+/* Ajustes para dispositivos pequeños */
+@media (max-width: 768px) {
+    .page-header .d-flex {
+        flex-direction: column; 
+        align-items: stretch; 
+        gap: 10px; 
+    }
+    .page-header .d-flex .btn {
+        max-width: 100%; 
+        min-width: unset; 
+    }
+    .providers-card {
+        padding: 20px;
+    }
 }

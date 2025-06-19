@@ -1,7 +1,8 @@
 import React, { useState, useEffect, useCallback } from 'react';
 // --- PASO 1: IMPORTAMOS useNavigate ---
 import { useNavigate } from 'react-router-dom';
-import { obtenerHistorialCompras } from '../../services/proveedoresService';
+// --- CORRECCIÓN AQUÍ: Importar desde historialComprasService ---
+import { obtenerHistorialCompras } from '../../services/historialComprasServices'; 
 
 const HistorialCompras = () => {
   // --- PASO 2: INICIALIZAMOS useNavigate ---
@@ -19,6 +20,9 @@ const HistorialCompras = () => {
       setError(null);
     } catch (err) {
       console.error("Error al cargar historial:", err);
+      // El mensaje "Proveedor no encontrado o inactivo" probablemente viene del backend
+      // o de una lógica condicional en el servicio si la respuesta es vacía o con cierto error.
+      // Aquí puedes mejorar el manejo de errores para ser más específico si es necesario.
       setError(err.message || "No se pudo cargar el historial de compras.");
     } finally {
       setCargando(false);
@@ -34,6 +38,7 @@ const HistorialCompras = () => {
   }
 
   if (error) {
+    // Mostrar el error que viene de la API o el mensaje por defecto
     return <div className="alert alert-danger mt-4" role="alert">{error}</div>;
   }
 

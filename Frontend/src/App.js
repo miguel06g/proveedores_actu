@@ -6,6 +6,7 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import 'react-toastify/dist/ReactToastify.css';
 import './styles/App.css';
 import './styles/Modal.css';
+import './styles/providers.css';
 
 // --- Importación de Componentes ---
 import AppLayout from './components/AppLayout';
@@ -19,14 +20,18 @@ import GestionProduccion from './components/Produccion/GestionProduccion';
 import Orders from './components/Orders';
 import PedidoForm from './components/Pedidos/PedidoForm';
 import PedidoDetalle from './components/Pedidos/PedidoDetalle';
-import Providers from './components/Providers';
+// import Providers from './components/Providers'; // <--- ¡LÍNEA ELIMINADA! Ya no necesitamos este componente directamente.
+import GestionProveedores from './components/proveedores/GestionProveedores'; // <--- ¡CAMBIO CRÍTICO AQUÍ!
 import CompraForm from './components/proveedores/CompraForm';
 import HistorialCompras from './components/proveedores/HistorialCompras';
 import CrearUsuario from './components/Admin/CrearUsuario';
 import ProtectedRoute from './components/Auth/ProtectedRoute';
 
-// --- CORRECCIÓN 1: Importamos el nuevo componente del formulario ---
-import ProveedorForm from './components/proveedores/ProveedorForm';
+// --- Importamos ProveedorForm si es que lo necesitabas para otra ruta aparte (pero lo gestionaremos en GestionProveedores) ---
+// Si ProveedorForm SOLO se abre como un modal desde GestionProveedores, entonces esta importación y su ruta ya no son estrictamente necesarias aquí.
+// Sin embargo, si quieres mantener la posibilidad de que exista una ruta directa al formulario (ej. para un caso específico), podrías dejarlo.
+// Por ahora, lo comentaré para el flujo que estamos construyendo (GestionProveedores abre el modal).
+// import ProveedorForm from './components/proveedores/ProveedorForm';
 
 
 const ROLES = {
@@ -55,16 +60,16 @@ function App() {
 
           <Route element={<AppLayout />}>
             <Route path="/dashboard" element={<Dashboard />} />
-            
+
             <Route element={<ProtectedRoute rolesPermitidos={[ROLES.ADMIN, ROLES.BODEGA, ROLES.AUXILIAR]} />}>
               <Route path="/inventory" element={<Inventory />} />
-              <Route path="/providers" element={<Providers />} />
+              {/* <Route path="/providers" element={<Providers />} /> */}
+              <Route path="/providers" element={<GestionProveedores />} />
               <Route path="/register-purchase" element={<CompraForm />} />
               <Route path="/providers/historial" element={<HistorialCompras />} />
-              {/* --- CORRECCIÓN 2: Añadimos la nueva ruta que faltaba --- */}
-              <Route path="/providers/proveedor" element={<ProveedorForm />} />
+              {/* <Route path="/providers/proveedor" element={<ProveedorForm />} /> */}
             </Route>
-            
+
             <Route element={<ProtectedRoute rolesPermitidos={[ROLES.ADMIN, ROLES.PRODUCCION]} />}>
               <Route path="/finished-products" element={<GestionProductosTerminados />} />
               <Route path="/recetas/:productoId" element={<GestionRecetas />} />
@@ -76,7 +81,7 @@ function App() {
                 <Route path="/orders/new" element={<PedidoForm />} />
                 <Route path="/orders/:id" element={<PedidoDetalle />} />
             </Route>
-            
+
             <Route element={<ProtectedRoute rolesPermitidos={[ROLES.ADMIN]} />}>
               <Route path="/admin/crear-usuario" element={<CrearUsuario />} />
             </Route>

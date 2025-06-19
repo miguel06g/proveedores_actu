@@ -1,47 +1,96 @@
-import React, { useState } from 'react';
+// frontend/src/components/ProveedorForm.js
+import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { toast } from 'react-toastify';
-// Asumimos que tendrás un servicio para proveedores, si no existe, deberás crearlo.
-// import { crearProveedor } from '../../services/proveedoresService';
+import Swal from 'sweetalert2';
 
-const ProveedorForm = () => {
+// CAMBIO AQUÍ: La ruta ha sido corregida
+import { getProveedorById, crearProveedor, actualizarProveedor } from '../../services/proveedoresService'; 
+
+const ProveedorForm = ({ proveedorId, onClose, onSave, onFormSuccess }) => {
     const navigate = useNavigate();
+
     const [formData, setFormData] = useState({
         nombre: '',
         informacion_contacto: '',
-        direccion: ''
+        direccion: '',
+        is_active: true
     });
     const [isSubmitting, setIsSubmitting] = useState(false);
+    const [loadingData, setLoadingData] = useState(true);
+
+    useEffect(() => {
+        if (proveedorId) {
+            setLoadingData(true);
+            getProveedorById(proveedorId)
+                .then(data => {
+                    setFormData({
+                        nombre: data.nombre || '',
+                        informacion_contacto: data.informacion_contacto || '',
+                        direccion: data.direccion || '',
+                        is_active: data.is_active !== undefined ? data.is_active : true 
+                    });
+                })
+                .catch(err => {
+                    console.error('Error al cargar los datos del proveedor para edición:', err);
+                    toast.error(err.message || 'Error al cargar datos del proveedor.');
+                    if (onClose) onClose(); 
+                })
+                .finally(() => {
+                    setLoadingData(false);
+                });
+        } else {
+            setLoadingData(false);
+            setFormData({
+                nombre: '',
+                informacion_contacto: '',
+                direccion: '',
+                is_active: true
+            });
+        }
+    }, [proveedorId, onClose]);
 
     const handleChange = (e) => {
-        setFormData({ ...formData, [e.target.name]: e.target.value });
+        const { name, value, type, checked } = e.target;
+        setFormData(prev => ({
+            ...prev,
+            [name]: type === 'checkbox' ? checked : value
+        }));
     };
 
     const handleSubmit = async (e) => {
         e.preventDefault();
         setIsSubmitting(true);
         try {
-            // Aquí llamarías a la función del servicio para guardar en la BD.
-            // Por ahora, simulamos una llamada exitosa.
-            // await crearProveedor(formData); 
-            console.log('Datos a enviar al backend:', formData);
-            toast.success('¡Proveedor registrado exitosamente!');
+            if (proveedorId) {
+                await actualizarProveedor(proveedorId, formData);
+                toast.success('¡Proveedor actualizado exitosamente!');
+            } else {
+                await crearProveedor(formData);
+                toast.success('¡Proveedor registrado exitosamente!');
+            }
             
-            // Después de registrar, redirigimos al usuario a la página principal de proveedores.
-            navigate('/providers'); 
+            if (onSave) onSave();
+            if (onClose) onClose();
+            if (onFormSuccess) onFormSuccess();
+            
         } catch (error) {
-            toast.error(error.message || 'Error al registrar el proveedor.');
+            console.error('Error al guardar el proveedor:', error);
+            toast.error(error.message || 'Error al guardar el proveedor.');
         } finally {
             setIsSubmitting(false);
         }
     };
 
+    if (loadingData) {
+        return <div className="text-center p-4">Cargando datos del proveedor...</div>;
+    }
+
     return (
         <div className="page-container">
             <div className="page-header">
-                <h2>Registrar Nuevo Proveedor</h2>
+                <h2>{proveedorId ? 'Editar Proveedor' : 'Registrar Nuevo Proveedor'}</h2>
             </div>
-            {/* El formulario ahora sigue la estructura estándar de Bootstrap */}
             <form onSubmit={handleSubmit}>
                 <div className="mb-3">
                     <label htmlFor="nombre" className="form-label">Nombre del Proveedor</label>
@@ -82,13 +131,32 @@ const ProveedorForm = () => {
                     />
                 </div>
 
-                {/* Botones de acción claros */}
+                {proveedorId && (
+                    <div className="mb-3 form-check">
+                        <input
+                            type="checkbox"
+                            id="is_active"
+                            name="is_active"
+                            className="form-check-input"
+                            checked={formData.is_active}
+                            onChange={handleChange}
+                        />
+                        <label htmlFor="is_active" className="form-check-label">Activo</label>
+                    </div>
+                )}
+
                 <button type="submit" className="btn btn-primary" disabled={isSubmitting}>
-                    {isSubmitting ? 'Registrando...' : 'Registrar Proveedor'}
+                    {isSubmitting ? 'Guardando...' : (proveedorId ? 'Actualizar Proveedor' : 'Registrar Proveedor')}
                 </button>
-                <button type="button" onClick={() => navigate('/providers')} className="btn btn-secondary ms-2">
-                    Cancelar
-                </button>
+                {onClose ? (
+                    <button type="button" onClick={onClose} className="btn btn-secondary ms-2" disabled={isSubmitting}>
+                        Cancelar
+                    </button>
+                ) : (
+                    <button type="button" onClick={() => navigate('/providers')} className="btn btn-secondary ms-2" disabled={isSubmitting}>
+                        Cancelar
+                    </button>
+                )}
             </form>
         </div>
     );
