@@ -24,6 +24,7 @@ const produccionRoutes = require('./routes/produccionRoutes');
 const clientesRoutes = require('./routes/clientesRoutes');
 const rolesRoutes = require('./routes/rolesRoutes');
 const dashboardRoutes = require('./routes/dashboardRoutes');
+const pagosRoutes = require('./routes/pagosRoutes');
 // Agrega aquí cualquier otro archivo de rutas que tengas
 
 // Usar las rutas con sus prefijos de API
@@ -41,6 +42,7 @@ app.use('/api/recetas', recetasRoutes);
 app.use('/api/produccion', produccionRoutes);
 app.use('/api/clientes', clientesRoutes);
 app.use('/api/roles', rolesRoutes); 
+app.use('/api/pagos', pagosRoutes);
 // ...
 
 // Ruta de prueba para verificar que el servidor está vivo
